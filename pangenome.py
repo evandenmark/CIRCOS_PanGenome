@@ -239,6 +239,7 @@ def make_files(groups_file, fasta_list):
         start = 0 
 	total_len = []
 	
+	com_file = open(each_species+'_name.txt', 'w')
 	
 	# ACCOUNT FOR THE OVERLAPPING GENES
 	# We want to go through the same cluster order each time. If we simply went through the cluster_dict, the cluster would be out of order and not allign.
@@ -252,6 +253,8 @@ def make_files(groups_file, fasta_list):
 				end = start + length
 				line = str(chromosome)+'\t'+str(start)+'\t'+str(end)+'\n'
 				new_file.write(line)
+				com_line = str(each_species)+'\t'+str(common_name)+'\t'+str(start)+'\t'+str(end)+'\n'
+				com_file.write(com_line)
 				start = end+1
 		# The sum of total_len is current place in which we are putting genes on the genome
 		# Each cluster must start and end in the same place, regardless if the species contains that gene at all
@@ -269,10 +272,13 @@ def make_files(groups_file, fasta_list):
 			end=start+length
 			line= str(chromosome)+'\t'+str(start)+'\t'+str(end)+'\n'
 			new_file.write(line)
+			com_line=str(each_species)+'\t'+str(common_name)+'\t'+str(start)+'\t'+str(end)+'\n'
+			com_file.write(com_line)
 			start = end+1
 			after_group_len.append(length)
 		
 	new_file.close()
+	com_file.close()
     
     # CREATE THE KARYOTYPE FILE (FOR CIRCOS VISUALIZATION)
     end = str(end)
